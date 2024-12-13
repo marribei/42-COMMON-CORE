@@ -1,0 +1,4 @@
+teste
+teste
+ok'\n'
+novo teste
