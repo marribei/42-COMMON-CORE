@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: marribei <marribei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/23 11:08:55 by marribei          #+#    #+#             */
-/*   Updated: 2024/12/08 17:33:58 by marribei         ###   ########.fr       */
+/*   Created: 2024/12/16 17:45:34 by marribei          #+#    #+#             */
+/*   Updated: 2024/12/17 15:58:47 by marribei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 5
+#  define BUFFER_SIZE 2
 # endif
 
 # include <unistd.h>
@@ -22,9 +22,10 @@
 # include <stdlib.h>
 # include <fcntl.h>
 
-int		newline_check_and_null(char *buffer);
-size_t	newline_len(char *buffer);
+size_t	ft_strlen(char *str);
 char	*ft_strjoin(char *s1, char *s2);
+char	*extract_line(char *buffer);
+void	update_buffer(char *buffer);
 char	*get_next_line(int fd);
 
 #endif

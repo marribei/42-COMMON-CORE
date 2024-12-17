@@ -5,44 +5,23 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: marribei <marribei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/23 11:13:53 by marribei          #+#    #+#             */
-/*   Updated: 2024/12/08 19:43:33 by marribei         ###   ########.fr       */
+/*   Created: 2024/12/16 17:48:44 by marribei          #+#    #+#             */
+/*   Updated: 2024/12/17 15:54:28 by marribei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int	newline_check_and_null(char *buffer)
-{
-	int		check;
-	char	*newline;
-
-	check = 0;
-	newline = buffer;
-	while (*buffer)
-	{
-		if (check == 1)
-		{
-			*newline = *buffer;
-			newline++;
-		}
-		else if (*buffer == '\n')
-			check = 1;
-		*buffer++ = '\0';
-	}
-	return (check);
-}
-
-size_t	newline_len(char *buffer)
+size_t	ft_strlen(char *str)
 {
 	size_t	i;
 
 	i = 0;
-	if (!buffer)
+	if (!str)
 		return (0);
-	while (buffer[i] != '\n' && buffer[i])
+	while (str[i])
 		i++;
-	return(i + (buffer[i] == '\n'));
+	return (i);
 }
 
 char	*ft_strjoin(char *s1, char *s2)
@@ -50,23 +29,69 @@ char	*ft_strjoin(char *s1, char *s2)
 	char	*newstr;
 	size_t	i;
 	size_t	j;
-	size_t	s1_len;
-	size_t	s2_len;
 
-	s1_len = newline_len(s1);
-	s2_len = newline_len(s2);
-	newstr = (char *)malloc(sizeof(char) * (s1_len + s2_len + 1));
+	if (!s1)
+	{
+		s1 = malloc(1);
+		if (!s1)
+			return (NULL);
+		s1[0] = '\0';
+	}
+	newstr = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!newstr)
 		return (NULL);
 	i = 0;
 	j = 0;
-	while (i < s1_len)
+	while (s1[i])
 		newstr[j++] = s1[i++];
-	free (s1);
 	i = 0;
-	while (i < s2_len)
+	while (s2[i])
 		newstr[j++] = s2[i++];
 	newstr[j] = '\0';
+	free (s1);
 	return (newstr);
 }
 
+char	*extract_line(char *buffer)
+{
+	char	*line;
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	while (buffer[i] && buffer[i] != '\n')
+		i++;
+	if (buffer[i] == '\n')
+		i++;
+	line = malloc(i + 1);
+	if (!line)
+		return (NULL);
+	j = 0;
+	while (j < i)
+	{
+		line[j] = buffer[j];
+		j++;
+	}
+	line[j] = '\0';
+	return (line);
+}
+
+void	update_buffer(char *buffer)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	j = 0;
+	while (buffer[i] && buffer[i] != '\n')
+		i++;
+	if (buffer[i] == '\n')
+		i++;
+	while (buffer[i])
+	{
+		buffer[j] = buffer[i];
+		i++;
+		j++;
+	}
+	buffer[j] = '\0';
+}

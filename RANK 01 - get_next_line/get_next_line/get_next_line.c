@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: marribei <marribei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/23 11:07:15 by marribei          #+#    #+#             */
-/*   Updated: 2024/12/08 19:39:50 by marribei         ###   ########.fr       */
+/*   Created: 2024/12/16 17:41:36 by marribei          #+#    #+#             */
+/*   Updated: 2024/12/17 23:45:21 by marribei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,40 +14,44 @@
 
 char	*get_next_line(int fd)
 {
-	static char	buffer[BUFFER_SIZE];
-	char		*line;
-	long long	bytes;
-	
-	if (fd < 0 || BUFFER_SIZE < 0)
+	static char		buffer[BUFFER_SIZE];
+	char			*line;
+	char			*temp_line;
+	long			bytes;
+
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	line = NULL;
 	while (1)
 	{
 		if (*buffer == '\0')
 			bytes = read(fd, buffer, BUFFER_SIZE);
-		if (bytes < 0)
-		{
-			free (line);
+		if (bytes <= 0)
 			return (NULL);
-		}
-		if (bytes)
-				line = ft_strjoin(line, buffer);
-		if (newline_check_and_null(buffer) || bytes == 0)
+		temp_line = extract_line(buffer);
+		if (!temp_line)
+			return (NULL);
+		line = ft_strjoin(line, temp_line);
+		free (temp_line);
+		update_buffer(buffer);
+		if (*buffer == '\0')
 			break ;
 	}
 	return (line);
 }
 
-int main(void)
+/*int	main(void)
 {
-	int fd = open("test.txt", O_RDONLY);
-	char *line;
+	int		fd;
+	char	*line;
 
+	fd = open("test.txt", O_RDONLY);
+//	fd = 0;
 	while ((line = get_next_line(fd)))
 	{
 		printf("%s", line);
-		free(line);
+		free (line);
 	}
-	close(fd);
+	close (fd);
 	return (0);
-}
+}*/
